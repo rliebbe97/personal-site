@@ -3,13 +3,14 @@ import profileImage from '../public/heroImage.png'
 import TwitterIcon from '../components/Icons/TwitterIcon'
 import LinkedinIcon from '../components/Icons/LinkedinIcon'
 import GithubIcon from '../components/Icons/GithubIcon'
+import ProjectCard from '@/components/ProjectCard'
 
 export default function Home() {
   return (
     <main className="flex flex-col items-center justify-between bg-[#F6F4F3]">
       
-      <div className=' mx-[20%] w-[100%] h-[100vh] md:flex md:flex-row-reverse max-w-7xl px-4 lg:px-8 pt-20'>
-        <div className='w-full h-1/2 flex items-center justify-center'>
+      <div className=' mx-[20%] w-[100%] md:h-[50vh] md:flex md:flex-row-reverse max-w-7xl px-4 lg:px-8 pt-20 mt-12'>
+        <div className='w-full h-1/2 md:h-full flex items-center justify-center'>
           <div className='w-[75vw] lg:w-[80%] h-[75vw] lg:h-[80%] relative'>
             <Image
                 src={profileImage}
@@ -23,13 +24,13 @@ export default function Home() {
           </div>
           
         </div>
-        <div className=' w-full h-1/2 flex flex-col items-center justify-start md:justify-center'>
+        <div className=' w-full md:h-full flex flex-col items-center justify-start md:justify-center'>
           <div className='mt-4 w-4/5 md:w-full'>
             <div className='font-sans font-bold text-4xl md:text-6xl w-full'>
                 I'm Roby Liebbe
             </div>
             <div className='text-lg md:text-3xl w-full my-1'>
-                Aspiring PM and builder
+                Turning Ideas Into Product{/* Aspiring PM and builder */}
             </div>
             <div className='h-1 w-full'>
               <div className='h-1 w-1/2 bg-[#276FBF]'>
@@ -48,9 +49,15 @@ export default function Home() {
             </div>
           </div>
         </div>
-
-
-
+      </div>
+      
+      <div className=' mx-[20%] w-[100%] h-[100vh] max-w-7xl px-4 lg:px-8 pt-40 md:pt-40'>
+        <h1 className='font-sans font-bold text-4xl md:text-5xl w-full mb-4 text-[#276FBF]'>
+          Projects
+        </h1>
+        <div className='flex flex-col justify-center items-center'>
+          <ProjectCard/>
+        </div>
       </div>
     </main>
   )
