@@ -36,7 +36,7 @@ export default function Hero() {
             display: 'block',
           }}
         >
-          Building · Photographing · Thinking
+          Building · Thinking · Living
         </span>
         <h1
           style={{
@@ -61,7 +61,7 @@ export default function Hero() {
             margin: 0,
           }}
         >
-          —multi-hyphenate
+          —still figuring it out
         </p>
         <p
           style={{
@@ -73,7 +73,7 @@ export default function Hero() {
             letterSpacing: '0.02em',
           }}
         >
-          builder of things. photographer of moments. thinker of thoughts.
+          Based in Washington, DC. Building things and enjoying the ride.
         </p>
       </div>
 

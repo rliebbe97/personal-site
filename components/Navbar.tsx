@@ -12,25 +12,11 @@ export default function Navbar() {
         zIndex: 100,
         padding: '28px 52px',
         display: 'flex',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
         alignItems: 'center',
         pointerEvents: 'none',
       }}
     >
-      <Link
-        href="/"
-        style={{
-          fontFamily: 'var(--font-cormorant)',
-          fontSize: 16,
-          color: '#ece8e1',
-          textDecoration: 'none',
-          pointerEvents: 'auto',
-          fontWeight: 400,
-        }}
-      >
-        Roby
-      </Link>
-
       <div style={{ display: 'flex', gap: 32, pointerEvents: 'auto' }}>
         {[
           { href: '/#work', label: 'Work' },
