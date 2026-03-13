@@ -18,8 +18,11 @@ const spaceMono = Space_Mono({
 })
 
 export const metadata = {
-  title: 'Roby Liebbe | Full-Stack Developer',
-  description: 'Personal portfolio showcasing projects and writings of Roby Liebbe, a full-stack developer passionate about building meaningful digital experiences.',
+  title: 'Roby Liebbe | Builder',
+  description: 'Personal portfolio showcasing projects and writings of Roby Liebbe, a builder passionate about creating meaningful digital experiences.',
+  icons: {
+    icon: '/favcon.jpg',
+  },
 }
 
 export default function RootLayout({ children }) {
