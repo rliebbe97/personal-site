@@ -1,5 +1,6 @@
 'use client'
 import { useRef, useState, useCallback } from 'react'
+import Link from 'next/link'
 
 interface Project {
   id: string
@@ -8,6 +9,7 @@ interface Project {
   tags: string[]
   year: string
   slug: string
+  externalUrl?: string
 }
 
 interface Props {
@@ -71,8 +73,10 @@ export default function ProjectCard({ project, index }: Props) {
   }
 
   const num = String(index + 1).padStart(3, '0')
+  const href = project.externalUrl || `/work/${project.slug}`
+  const isExternal = Boolean(project.externalUrl)
 
-  return (
+  const card = (
     <div
       ref={cardRef}
       onMouseMove={handleMouseMove}
@@ -153,8 +157,28 @@ export default function ProjectCard({ project, index }: Props) {
           color: '#3a3835',
         }}
       >
-        {[...project.tags, project.year].join('  ·  ')}
+        {[...(project.tags || []), project.year].filter(Boolean).join('  ·  ')}
       </div>
     </div>
+  )
+
+  const wrapperStyle = {
+    display: 'block',
+    height: '100%',
+    textDecoration: 'none',
+  } as const
+
+  if (isExternal) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" style={wrapperStyle}>
+        {card}
+      </a>
+    )
+  }
+
+  return (
+    <Link href={href} style={wrapperStyle}>
+      {card}
+    </Link>
   )
 }

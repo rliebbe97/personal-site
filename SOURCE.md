@@ -33,7 +33,7 @@ This site pulls content from **three places**. Use this as the map for "where do
 
 - Open **`/studio`** (e.g. `localhost:3000/studio` or `yourdomain.com/studio`), log in, and add/edit:
   - **Photo** — image (auto-served via Sanity's CDN, optimized + resized), location/caption, "wide" toggle.
-  - **Project** — title, slug, description, tags, year.
+  - **Project** — title, slug, description, tags, year, plus optional **cover image**, **body** (rich text), **live URL**, **repo URL**. Each project gets its own page at **`/work/[slug]`** (the card links there). Set **External link** on a project to make its card link straight out instead of opening the in-site page.
   - **Shelf item** — title, creator, type (book/film/podcast), optional note. **Cover art is fetched automatically** (see below) — you usually only type a title + creator.
 - Changes appear within ~60s (`revalidate = 60`; shelf is 5 min).
 
@@ -93,6 +93,7 @@ For the Studio to work on production, also allow the domain:
 | Route | Renders | From |
 |---|---|---|
 | `/` (home) | Work, Photos, Words, Shelf, Interests | Sanity + Substack + repo |
+| `/work/[slug]` | Project detail pages | Sanity |
 | `/photos` | Full photo gallery | Sanity |
 | `/words` | Blog post list | Substack RSS |
 | `/interests/[slug]` | Interest detail pages | `lib/interests.ts` |

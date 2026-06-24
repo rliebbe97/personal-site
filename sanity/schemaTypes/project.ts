@@ -38,8 +38,48 @@ export const project = defineType({
       type: 'string',
       description: 'e.g. 2024',
     }),
+    defineField({
+      name: 'coverImage',
+      title: 'Cover image',
+      type: 'image',
+      options: { hotspot: true },
+      description: 'Optional. Shown at the top of the project page.',
+    }),
+    defineField({
+      name: 'liveUrl',
+      title: 'Live URL',
+      type: 'url',
+      description: 'Optional. Link to the live site/app, shown as a button.',
+    }),
+    defineField({
+      name: 'repoUrl',
+      title: 'Repository URL',
+      type: 'url',
+      description: 'Optional. Link to the GitHub repo, shown as a button.',
+    }),
+    defineField({
+      name: 'externalUrl',
+      title: 'External link (override)',
+      type: 'url',
+      description:
+        'Optional. If set, the project card links straight here instead of opening its own page on the site.',
+    }),
+    defineField({
+      name: 'body',
+      title: 'Body',
+      type: 'array',
+      description: 'Optional. The write-up shown on the project page.',
+      of: [
+        { type: 'block' },
+        {
+          type: 'image',
+          options: { hotspot: true },
+          fields: [{ name: 'alt', title: 'Alt text', type: 'string' }],
+        },
+      ],
+    }),
   ],
   preview: {
-    select: { title: 'title', subtitle: 'year' },
+    select: { title: 'title', subtitle: 'year', media: 'coverImage' },
   },
 })

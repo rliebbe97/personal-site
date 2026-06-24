@@ -1,6 +1,8 @@
 import { client } from './client'
 import {
   PROJECTS_QUERY,
+  PROJECT_QUERY,
+  PROJECT_SLUGS_QUERY,
   POSTS_QUERY,
   POST_QUERY,
   POST_SLUGS_QUERY,
@@ -19,6 +21,14 @@ export interface SanityProject {
   tags: string[]
   year: string
   slug: string
+  externalUrl?: string
+}
+
+export interface SanityProjectDetail extends SanityProject {
+  liveUrl?: string
+  repoUrl?: string
+  coverImage?: SanityImageSource
+  body?: PortableTextBlock[]
 }
 
 export interface SanityPostMeta {
@@ -46,6 +56,16 @@ export interface SanityPhoto {
 export async function getProjects(): Promise<SanityProject[]> {
   if (!client) return []
   return client.fetch(PROJECTS_QUERY, {}, { next: { revalidate: 60 } })
+}
+
+export async function getProject(slug: string): Promise<SanityProjectDetail | null> {
+  if (!client) return null
+  return client.fetch(PROJECT_QUERY, { slug }, { next: { revalidate: 60 } })
+}
+
+export async function getProjectSlugs(): Promise<{ slug: string }[]> {
+  if (!client) return []
+  return client.fetch(PROJECT_SLUGS_QUERY)
 }
 
 export async function getPosts(): Promise<SanityPostMeta[]> {

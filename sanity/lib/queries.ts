@@ -8,8 +8,29 @@ export const PROJECTS_QUERY = groq`
     description,
     tags,
     year,
-    "slug": slug.current
+    "slug": slug.current,
+    externalUrl
   }
+`
+
+export const PROJECT_QUERY = groq`
+  *[_type == "project" && slug.current == $slug][0] {
+    "id": _id,
+    title,
+    description,
+    tags,
+    year,
+    "slug": slug.current,
+    externalUrl,
+    liveUrl,
+    repoUrl,
+    coverImage,
+    body
+  }
+`
+
+export const PROJECT_SLUGS_QUERY = groq`
+  *[_type == "project" && defined(slug.current)]{ "slug": slug.current }
 `
 
 // --- Posts (Words) ---
