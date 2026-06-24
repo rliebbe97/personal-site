@@ -6,9 +6,8 @@ import ShelfGrid from '@/components/ShelfGrid'
 import InterestsList from '@/components/InterestsList'
 import RevealSection from '@/components/RevealSection'
 import Footer from '@/components/Footer'
-import { shelf } from '@/lib/shelf'
 import { interests } from '@/lib/interests'
-import { getProjects, getPhotos } from '@/sanity/lib/fetch'
+import { getProjects, getPhotos, getShelf } from '@/sanity/lib/fetch'
 import { getSubstackPosts } from '@/lib/substack'
 
 const LABEL_STYLE = {
@@ -36,10 +35,11 @@ const EMPTY_STYLE = {
 }
 
 export default async function HomePage() {
-  const [projects, posts, photos] = await Promise.all([
+  const [projects, posts, photos, shelf] = await Promise.all([
     getProjects(),
     getSubstackPosts(),
     getPhotos(),
+    getShelf(),
   ])
 
   return (

@@ -37,6 +37,20 @@ export const POST_SLUGS_QUERY = groq`
   *[_type == "post" && defined(slug.current)]{ "slug": slug.current }
 `
 
+// --- Shelf ---
+export const SHELF_QUERY = groq`
+  *[_type == "shelfItem"] | order(coalesce(order, 9999) asc, _createdAt desc) {
+    "id": _id,
+    title,
+    creator,
+    type,
+    note,
+    coverUrl,
+    searchHint,
+    "uploadedCover": cover.asset->url
+  }
+`
+
 // --- Photos ---
 export const PHOTOS_QUERY = groq`
   *[_type == "photo"] | order(coalesce(orderRank, _createdAt) desc) {

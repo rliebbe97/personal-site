@@ -7,7 +7,7 @@ This site pulls content from **three places**. Use this as the map for "where do
 | **Words** (blog/essays) | **Substack** | [robybuilds.substack.com](https://robybuilds.substack.com) | `lib/substack.ts` (RSS) |
 | **Photos** | **Sanity** | `/studio` | `sanity/lib/fetch.ts` → `getPhotos()` |
 | **Projects** (Work) | **Sanity** | `/studio` | `sanity/lib/fetch.ts` → `getProjects()` |
-| **Shelf** (books/films) | **In repo** | `lib/shelf.ts` | imported directly |
+| **Shelf** (books/films/podcasts) | **Sanity** (covers auto-fetched) | `/studio` | `sanity/lib/fetch.ts` → `getShelf()` |
 | **Interests** | **In repo** | `lib/interests.ts` | imported directly |
 | **Hero copy / tagline** | **In repo** | `components/Hero.tsx` | — |
 | **Nav links** | **In repo** | `components/Navbar.tsx` | — |
@@ -27,14 +27,28 @@ This site pulls content from **three places**. Use this as the map for "where do
 
 > Dormant: a Sanity `post` schema, `getPosts()/getPost()`, and the `/words/[slug]` in-site reader still exist but are **unused**. They're kept in case you ever want site-native posts instead of Substack. Today, nothing links to them.
 
-## 2. Sanity → Photos & Projects
+## 2. Sanity → Photos, Projects & Shelf
 
-**Sanity is the CMS for photos and projects.** Edit them in the embedded Studio.
+**Sanity is the CMS for photos, projects, and the shelf.** Edit them in the embedded Studio.
 
 - Open **`/studio`** (e.g. `localhost:3000/studio` or `yourdomain.com/studio`), log in, and add/edit:
   - **Photo** — image (auto-served via Sanity's CDN, optimized + resized), location/caption, "wide" toggle.
   - **Project** — title, slug, description, tags, year.
-- Changes appear within ~60s (`revalidate = 60`).
+  - **Shelf item** — title, creator, type (book/film/podcast), optional note. **Cover art is fetched automatically** (see below) — you usually only type a title + creator.
+- Changes appear within ~60s (`revalidate = 60`; shelf is 5 min).
+
+### Shelf covers (automatic)
+
+You don't upload covers. `lib/covers.ts` resolves each item's art from free, keyless APIs:
+- **Books** → Open Library (by ISBN if the search hint looks like one, else title + author)
+- **Films** → iTunes Search (first `feature-movie` match)
+- **Podcasts** → iTunes Search (podcast)
+
+Resolution order per item: **uploaded `cover` image → `coverUrl` → auto-fetched → flat color box** (if everything misses). Three optional override fields in the Studio handle edge cases:
+- `cover` (upload) or `coverUrl` — force a specific image
+- `searchHint` — an exact title or ISBN when the auto-pick is wrong
+
+> Until you add shelf items in the Studio, the section falls back to the curated seed list in `lib/shelf.ts` (run through the same auto-cover lookup). Once Sanity has any shelf items, the seed is ignored.
 - Project ID: `xy02ce00`, dataset: `production`.
 - Code:
   - Schemas → `sanity/schemaTypes/` (`photo.ts`, `project.ts`, `post.ts`)
@@ -44,12 +58,12 @@ This site pulls content from **three places**. Use this as the map for "where do
   - Studio config → `sanity.config.ts`, `sanity.cli.ts`
   - Studio route → `app/studio/[[...tool]]/page.tsx`
 
-## 3. In the repo → Shelf, Interests, copy
+## 3. In the repo → Interests & copy
 
 These are simple enough that they live as TypeScript in the repo — edit the file and commit.
 
-- **Shelf** (books / films / podcasts): `lib/shelf.ts`
 - **Interests** (Skiing, Soccer, etc. + their `/interests/[slug]` pages): `lib/interests.ts`
+- **Shelf seed/fallback** (used only until Sanity has shelf items): `lib/shelf.ts`
 - **Hero** name + tagline + location line: `components/Hero.tsx` (the old "still figuring it out" line is commented out, not deleted)
 - **Navigation** links: `components/Navbar.tsx`
 

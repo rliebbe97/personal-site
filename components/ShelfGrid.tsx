@@ -2,10 +2,12 @@
 import { useState } from 'react'
 
 interface ShelfItem {
+  id?: string
   title: string
-  creator: string
+  creator?: string
   type: 'book' | 'film' | 'podcast'
-  coverColor: string
+  coverImage?: string | null
+  coverColor?: string
   note?: string
 }
 
@@ -24,27 +26,45 @@ function ShelfCard({ item }: { item: ShelfItem }) {
       <div
         style={{
           aspectRatio: '2/3',
-          background: item.coverColor,
+          background: item.coverColor || '#100f0f',
           border: '1px solid #1e1c1a',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: 12,
+          padding: item.coverImage ? 0 : 12,
           marginBottom: 10,
+          overflow: 'hidden',
+          position: 'relative',
         }}
       >
-        <span
-          style={{
-            fontFamily: 'var(--font-cormorant)',
-            fontSize: 13,
-            fontStyle: 'italic',
-            color: 'rgba(236,232,225,0.4)',
-            textAlign: 'center',
-            lineHeight: 1.4,
-          }}
-        >
-          {item.title}
-        </span>
+        {item.coverImage ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={item.coverImage}
+            alt={item.title}
+            loading="lazy"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              transform: hovered ? 'scale(1.03)' : 'scale(1)',
+              transition: 'transform 0.4s ease',
+            }}
+          />
+        ) : (
+          <span
+            style={{
+              fontFamily: 'var(--font-cormorant)',
+              fontSize: 13,
+              fontStyle: 'italic',
+              color: 'rgba(236,232,225,0.4)',
+              textAlign: 'center',
+              lineHeight: 1.4,
+            }}
+          >
+            {item.title}
+          </span>
+        )}
       </div>
       <p
         style={{
@@ -58,17 +78,19 @@ function ShelfCard({ item }: { item: ShelfItem }) {
       >
         {item.title}
       </p>
-      <p
-        style={{
-          fontFamily: 'var(--font-space-mono)',
-          fontSize: 9,
-          color: '#3a3835',
-          letterSpacing: '0.04em',
-          margin: 0,
-        }}
-      >
-        {item.creator}
-      </p>
+      {item.creator && (
+        <p
+          style={{
+            fontFamily: 'var(--font-space-mono)',
+            fontSize: 9,
+            color: '#3a3835',
+            letterSpacing: '0.04em',
+            margin: 0,
+          }}
+        >
+          {item.creator}
+        </p>
+      )}
     </div>
   )
 }
@@ -83,7 +105,7 @@ export default function ShelfGrid({ items }: { items: ShelfItem[] }) {
       }}
     >
       {items.map((item, i) => (
-        <ShelfCard key={i} item={item} />
+        <ShelfCard key={item.id || i} item={item} />
       ))}
     </div>
   )

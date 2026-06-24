@@ -5,9 +5,12 @@ import {
   POST_QUERY,
   POST_SLUGS_QUERY,
   PHOTOS_QUERY,
+  SHELF_QUERY,
 } from './queries'
 import type { PortableTextBlock } from '@portabletext/types'
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types'
+import { resolveCover, type ShelfType } from '@/lib/covers'
+import { shelf as shelfSeed } from '@/lib/shelf'
 
 export interface SanityProject {
   id: string
@@ -63,4 +66,74 @@ export async function getPostSlugs(): Promise<{ slug: string }[]> {
 export async function getPhotos(): Promise<SanityPhoto[]> {
   if (!client) return []
   return client.fetch(PHOTOS_QUERY, {}, { next: { revalidate: 60 } })
+}
+
+export interface ShelfEntry {
+  id: string
+  title: string
+  creator?: string
+  type: ShelfType
+  note?: string
+  coverImage: string | null
+  coverColor: string
+}
+
+interface RawShelf {
+  id: string
+  title: string
+  creator?: string
+  type: ShelfType
+  note?: string
+  coverUrl?: string
+  searchHint?: string
+  uploadedCover?: string
+}
+
+const FALLBACK_COLOR = '#100f0f'
+
+/**
+ * Shelf items, sourced from Sanity. Falls back to the curated lib/shelf seed
+ * when Sanity has none yet, so the section is never empty. For every item the
+ * cover art is resolved in this order: uploaded image → manual URL →
+ * auto-fetched (Open Library / iTunes). Falls back to a flat color box on miss.
+ */
+export async function getShelf(): Promise<ShelfEntry[]> {
+  const raw: RawShelf[] = client
+    ? await client.fetch(SHELF_QUERY, {}, { next: { revalidate: 300 } })
+    : []
+
+  const items: RawShelf[] =
+    raw.length > 0
+      ? raw
+      : shelfSeed.map((s, i) => ({
+          id: `seed-${i}`,
+          title: s.title,
+          creator: s.creator,
+          type: s.type,
+          note: s.note,
+        }))
+
+  return Promise.all(
+    items.map(async (item) => {
+      const coverImage =
+        item.uploadedCover ||
+        item.coverUrl ||
+        (await resolveCover({
+          type: item.type,
+          title: item.title,
+          creator: item.creator,
+          searchHint: item.searchHint,
+        }))
+
+      return {
+        id: item.id,
+        title: item.title,
+        creator: item.creator,
+        type: item.type,
+        note: item.note,
+        coverImage: coverImage ?? null,
+        coverColor: FALLBACK_COLOR,
+      }
+    })
+  )
 }
