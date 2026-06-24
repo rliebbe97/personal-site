@@ -1,4 +1,11 @@
-export default function Photos() {
+import PhotoGrid from '@/components/PhotoGrid'
+import { getPhotos } from '@/sanity/lib/fetch'
+
+export const revalidate = 60
+
+export default async function Photos() {
+  const photos = await getPhotos()
+
   return (
     <main style={{ background: '#070707', minHeight: '100vh', padding: '120px 52px' }}>
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
@@ -13,14 +20,18 @@ export default function Photos() {
         }}>
           Photos
         </span>
-        <p style={{
-          fontFamily: 'var(--font-cormorant)',
-          fontSize: 32,
-          color: '#ece8e1',
-          fontWeight: 300,
-        }}>
-          Gallery coming soon.
-        </p>
+        {photos.length === 0 ? (
+          <p style={{
+            fontFamily: 'var(--font-cormorant)',
+            fontSize: 32,
+            color: '#ece8e1',
+            fontWeight: 300,
+          }}>
+            Gallery coming soon.
+          </p>
+        ) : (
+          <PhotoGrid photos={photos} />
+        )}
       </div>
     </main>
   )

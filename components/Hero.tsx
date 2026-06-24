@@ -50,6 +50,7 @@ export default function Hero() {
         >
           Roby
         </h1>
+        {/* Hero tagline — removed for now, kept for later use.
         <p
           style={{
             fontFamily: 'var(--font-cormorant)',
@@ -63,6 +64,7 @@ export default function Hero() {
         >
           —still figuring it out
         </p>
+        */}
         <p
           style={{
             fontFamily: 'var(--font-cormorant)',
