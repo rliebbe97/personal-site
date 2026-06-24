@@ -57,7 +57,8 @@ export const shelfItem = defineType({
       name: 'coverUrl',
       title: 'Cover URL (override)',
       type: 'url',
-      description: 'Optional. A direct image URL, used if no image is uploaded.',
+      description:
+        'Optional. A DIRECT image link ending in .jpg/.png — right-click an image → "Copy image address". A Google Images search-page link will be ignored.',
     }),
     defineField({
       name: 'searchHint',

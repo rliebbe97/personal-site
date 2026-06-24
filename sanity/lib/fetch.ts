@@ -11,7 +11,7 @@ import {
 } from './queries'
 import type { PortableTextBlock } from '@portabletext/types'
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types'
-import { resolveCover, type ShelfType } from '@/lib/covers'
+import { resolveCover, sanitizeCoverUrl, type ShelfType } from '@/lib/covers'
 import { shelf as shelfSeed } from '@/lib/shelf'
 
 export interface SanityProject {
@@ -137,7 +137,7 @@ export async function getShelf(): Promise<ShelfEntry[]> {
     items.map(async (item) => {
       const coverImage =
         item.uploadedCover ||
-        item.coverUrl ||
+        sanitizeCoverUrl(item.coverUrl) ||
         (await resolveCover({
           type: item.type,
           title: item.title,

@@ -13,6 +13,8 @@ interface ShelfItem {
 
 function ShelfCard({ item }: { item: ShelfItem }) {
   const [hovered, setHovered] = useState(false)
+  const [imgFailed, setImgFailed] = useState(false)
+  const showImage = Boolean(item.coverImage) && !imgFailed
 
   return (
     <div
@@ -31,18 +33,19 @@ function ShelfCard({ item }: { item: ShelfItem }) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: item.coverImage ? 0 : 12,
+          padding: showImage ? 0 : 12,
           marginBottom: 10,
           overflow: 'hidden',
           position: 'relative',
         }}
       >
-        {item.coverImage ? (
+        {showImage ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={item.coverImage}
+            src={item.coverImage as string}
             alt={item.title}
             loading="lazy"
+            onError={() => setImgFailed(true)}
             style={{
               width: '100%',
               height: '100%',
