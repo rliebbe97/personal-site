@@ -56,66 +56,8 @@ export default function InterestPage({ params }: { params: { slug: string } }) {
             maxWidth: 680,
           }}
         >
-          {interest.thought}
+          Coming soon.
         </p>
-
-        {interest.body && (
-          <div style={{ marginTop: 48, maxWidth: 680 }}>
-            {interest.body.map((paragraph, i) => (
-              <p
-                key={i}
-                style={{
-                  fontFamily: 'var(--font-cormorant)',
-                  fontSize: 20,
-                  fontWeight: 300,
-                  color: '#ece8e1',
-                  lineHeight: 1.6,
-                  margin: '0 0 20px 0',
-                }}
-              >
-                {paragraph}
-              </p>
-            ))}
-          </div>
-        )}
-
-        {interest.list && (
-          <div style={{ marginTop: 48, maxWidth: 680 }}>
-            {interest.list.heading && (
-              <span
-                style={{
-                  fontFamily: 'var(--font-space-mono)',
-                  fontSize: 9,
-                  letterSpacing: '0.22em',
-                  textTransform: 'uppercase',
-                  color: '#66625e',
-                  display: 'block',
-                  marginBottom: 24,
-                }}
-              >
-                {interest.list.heading}
-              </span>
-            )}
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-              {interest.list.items.map((item, i) => (
-                <li
-                  key={i}
-                  style={{
-                    fontFamily: 'var(--font-cormorant)',
-                    fontSize: 22,
-                    fontWeight: 300,
-                    color: '#ece8e1',
-                    lineHeight: 1.2,
-                    padding: '16px 0',
-                    borderTop: '1px solid #1e1c1a',
-                  }}
-                >
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
       </div>
     </main>
   )
