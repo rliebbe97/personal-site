@@ -1,8 +1,9 @@
 'use client'
-import { useRef, useState, useEffect, useCallback } from 'react'
+import { useRef, useState, useEffect, useCallback, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Canvas from './Canvas'
 import { CANVAS_ITEMS } from './itemConfigs'
+import { AnyItemConfig } from './types'
 
 interface ExitTarget {
   x: number
@@ -29,13 +30,25 @@ function generateExitTargets(): ExitTarget[] {
 
 interface Props {
   onEnter: () => void
+  photoUrls?: string[]
 }
 
-export default function PreloaderIndex({ onEnter }: Props) {
+export default function PreloaderIndex({ onEnter, photoUrls = [] }: Props) {
   const canvasRef = useRef<HTMLDivElement>(null!)
   const [isExiting, setIsExiting] = useState(false)
   const [canvasVisible, setCanvasVisible] = useState(true)
   const exitTargetsRef = useRef<ExitTarget[]>([])
+
+  // Assign Sanity photos to the image frames, cycling to fill them all.
+  const items = useMemo<AnyItemConfig[]>(() => {
+    if (photoUrls.length === 0) return CANVAS_ITEMS
+    let i = 0
+    return CANVAS_ITEMS.map((item) =>
+      item.type === 'image-placeholder'
+        ? { ...item, src: photoUrls[i++ % photoUrls.length] }
+        : item
+    )
+  }, [photoUrls])
 
   // Generate exit targets once on mount
   useEffect(() => {
@@ -66,7 +79,7 @@ export default function PreloaderIndex({ onEnter }: Props) {
         >
           <Canvas
             canvasRef={canvasRef}
-            items={CANVAS_ITEMS}
+            items={items}
             isExiting={isExiting}
             exitTargets={exitTargetsRef.current}
           />

@@ -32,7 +32,7 @@ This site pulls content from **three places**. Use this as the map for "where do
 **Sanity is the CMS for photos, projects, and the shelf.** Edit them in the embedded Studio.
 
 - Open **`/studio`** (e.g. `localhost:3000/studio` or `yourdomain.com/studio`), log in, and add/edit:
-  - **Photo** — image (auto-served via Sanity's CDN, optimized + resized), location/caption, "wide" toggle.
+  - **Photo** — image (auto-served via Sanity's CDN, optimized + resized), location/caption, "wide" toggle. These photos also fill the floating frames in the intro/preloader screen (cycled to fill all 6).
   - **Project** — title, slug, description, tags, year, plus optional **cover image**, **body** (rich text), **live URL**, **repo URL**. Each project gets its own page at **`/work/[slug]`** (the card links there). Set **External link** on a project to make its card link straight out instead of opening the in-site page.
   - **Shelf item** — title, creator, type (book/film/podcast), optional note. **Cover art is fetched automatically** (see below) — you usually only type a title + creator.
 - Changes appear within ~60s (`revalidate = 60`; shelf is 5 min).

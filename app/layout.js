@@ -1,6 +1,8 @@
 import { Cormorant_Garamond, Space_Mono } from 'next/font/google'
 import './globals.css'
 import SiteChrome from '../components/SiteChrome'
+import { getPhotos } from '../sanity/lib/fetch'
+import { urlFor } from '../sanity/lib/image'
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -23,11 +25,16 @@ export const metadata = {
   },
 }
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const photos = await getPhotos()
+  const photoUrls = photos.map((p) =>
+    urlFor(p.image).width(600).fit('max').auto('format').url()
+  )
+
   return (
     <html lang="en">
       <body className={`${cormorant.variable} ${spaceMono.variable} font-sans`}>
-        <SiteChrome>{children}</SiteChrome>
+        <SiteChrome photoUrls={photoUrls}>{children}</SiteChrome>
       </body>
     </html>
   )

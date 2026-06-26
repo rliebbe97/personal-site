@@ -5,7 +5,13 @@ import PreloaderIndex from './Preloader/index'
 
 const SESSION_KEY = 'hasVisited'
 
-export default function PreloaderWrapper({ children }: { children: React.ReactNode }) {
+export default function PreloaderWrapper({
+  children,
+  photoUrls,
+}: {
+  children: React.ReactNode
+  photoUrls?: string[]
+}) {
   const [showPreloader, setShowPreloader] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const [hydrated, setHydrated] = useState(false)
@@ -30,7 +36,9 @@ export default function PreloaderWrapper({ children }: { children: React.ReactNo
   return (
     <>
       <AnimatePresence>
-        {showPreloader && <PreloaderIndex key="preloader" onEnter={handleEnter} />}
+        {showPreloader && (
+          <PreloaderIndex key="preloader" onEnter={handleEnter} photoUrls={photoUrls} />
+        )}
       </AnimatePresence>
       <motion.div animate={{ opacity: loaded ? 1 : 0 }} transition={{ duration: 0.4 }}>
         {children}

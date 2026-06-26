@@ -12,7 +12,18 @@ export default function ImagePlaceholder({ config }: { config: ImagePlaceholderC
         transform: `rotate(${config.rotate}deg)`,
         userSelect: 'none',
         flexShrink: 0,
+        overflow: 'hidden',
       }}
-    />
+    >
+      {config.src && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={config.src}
+          alt=""
+          draggable={false}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+        />
+      )}
+    </div>
   )
 }

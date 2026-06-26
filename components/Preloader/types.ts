@@ -26,6 +26,7 @@ export interface ImagePlaceholderConfig extends BaseItemConfig {
   width: number
   height: number
   rotate: number
+  src?: string // Sanity photo URL; falls back to an empty frame when absent
 }
 
 export interface QuoteFragmentConfig extends BaseItemConfig {
